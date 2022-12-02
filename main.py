@@ -12,5 +12,10 @@ def print_hi(name):
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     print_hi('PyCharm')
+    s = [1, 13, 14, 5, 0, 3, 2]
+    x = sorted(s[3:])
+    s = s[:3] + x
+    print(s)
+
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
