@@ -71,6 +71,43 @@ def trap(self, height):
 # Notice that you may not slant the container.
 
 
+# 159. Longest Substring with At Most Two Distinct Characters
+
+# Given a string s, find the length of the longest substring t that contains at most 2 distinct characters.
+# input : "eceba"
+# output: 3
+# input : "ccaabbb"
+# output: 5
+# T(n) = 0(n)
+# S(n) = 0(1)
+def longest_substring_with_at_most_two_distinct_characters(s):
+    start = 0
+    end = 0
+    max_len = 0
+    d = {}
+    while end < len(s):
+        d[s[end]] = end
+        if len(d) > 2:
+            min_ind = min(d.values())
+            start = min_ind + 1
+            del d[s[min_ind]]
+        max_len = max(max_len, end - start + 1)
+        end += 1
+    return max_len
+
+# s = "ccaabbb"
+# s = "abc"
+# print(longest_substring_with_at_most_two_distinct_characters(s))
+
+
+
+
+
+
+
+
+
+
 
 # 238. Product of Array Except Self
 # Given an integer array nums, return an array answer such that answer[i] is equal to
@@ -98,6 +135,11 @@ def product_except_self(nums):
         output[i] *= left
         left *= nums[i]
     return output
+
+
+
+
+
 
 
 
