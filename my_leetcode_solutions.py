@@ -52,6 +52,69 @@ def trap(self, height):
 
 
 
+# 62. Unique Paths
+# There is a robot on an m x n grid. The robot is initially located at the top-left corner
+# (i.e., grid[0][0]). The robot tries to move to the bottom-right corner (i.e., grid[m - 1][n - 1]).
+# The robot can only move either down or right at any point in time.
+#
+# Given the two integers m and n, return the number of possible unique paths that the robot can take to reach the bottom-right corner.
+
+# The test cases are generated so that the answer will be less than or equal to 2 * 109.
+def uniquePaths(m, n) :
+    if m == n == 1:
+        return 1
+    dp = [[1] * n] * m
+    for row in range(1, len(dp)):
+        for col in range(1, len(dp[0])):
+            dp[row][col] = dp[row - 1][col] + dp[row][col - 1]
+    return dp[-1][-1]
+def unique_paths_deepti(m , n):
+    if m == n == 1:
+        return 1
+    dp = [[1] * m] * n
+
+    for row in range(1, len(dp)):
+        for col in range(1, len(dp[row])):
+            dp[row][col] = dp[row - 1][col] + dp[row][col - 1]
+    return dp[-1][-1]
+
+
+# 63. Unique Paths II
+# You are given an m x n integer array grid. There is a robot initially located at the top-left corner (i.e., grid[0][0]).
+# The robot tries to move to the bottom-right corner (i.e., grid[m - 1][n - 1]).
+# The robot can only move either down or right at any point in time.
+#
+# An obstacle and space are marked as 1 or 0 respectively in grid. A path that the robot takes cannot
+# include any square that is an obstacle.
+#
+# Return the number of possible unique paths that the robot can take to reach the bottom-right corner.
+#
+# The testcases are generated so that the answer will be less than or equal to 2 * 109.
+
+# Input: obstacleGrid = [[0,0,0],[0,1,0],[0,0,0]]
+# Output: 2
+
+def unique_paths_2(obstacleGrid):
+    for row in range(len(obstacleGrid)):
+        for col in range(len(obstacleGrid[0])):
+            if obstacleGrid[row][col] == 1:
+                obstacleGrid[row][col] = 0
+            elif row == 0 and col == 0:
+                obstacleGrid[row][col] = 1
+            else:
+                if row - 1 >= 0 and col - 1 >= 0:
+                    obstacleGrid[row][col] = obstacleGrid[row - 1][col] + obstacleGrid[row][col - 1]
+                elif row - 1 >= 0:
+                    obstacleGrid[row][col] = obstacleGrid[row - 1][col]
+                else:
+                    obstacleGrid[row][col] = obstacleGrid[row][col - 1]
+
+    return obstacleGrid[-1][-1]
+
+# obstacleGrid = [[0,0,0],[0,1,0],[0,0,0]]
+# print(unique_paths_2(obstacleGrid))
+
+
 
 # 79. Word Search
 # Given an m x n grid of characters board and a string word, return true
@@ -103,6 +166,9 @@ def longest_substring_with_at_most_two_distinct_characters(s):
 
 
 
+# # 253 Meeting Rooms II
+# Given an array of meeting time intervals intervals where
+
 
 
 
@@ -137,12 +203,57 @@ def product_except_self(nums):
     return output
 
 
+# 662. Maximum Width of Binary Tree
+# Given the root of a binary tree, return the maximum width of the given tree.
+#
+# The maximum width of a tree is the maximum width among all levels.
+#
+# The width of one level is defined as the length between the end-nodes (the leftmost and rightmost non-null nodes),
+# where the null nodes between the end-nodes that would be present in a complete binary tree extending down to that
+# level are also counted into the length calculation.
+#
+# It is guaranteed that the answer will in the range of a 32-bit signed integer.
+def widthOfBinaryTree(root):
+    max_width = 1
+    curr_list = [(root, 1)]
+    while curr_list:
+        next_level = []
+        for node, pos in curr_list:
+            if node.left:
+                next_level.append((node.left, pos * 2))
+            if node.right:
+                next_level.append((node.right, pos * 2 + 1))
+
+            if next_level != []:
+                max_width = max(max_width, next_level[-1][1] - next_level[0][1] + 1)
+            curr_list = next_level
+    return max_width
 
 
 
 
+# 841. Keys and Rooms
+# There are n rooms labeled from 0 to n - 1 and all the rooms are locked except for room 0. Your goal is to visit all the rooms.
+# However, you cannot enter a locked room without having its key.
+#
+# When you visit a room, you may find a set of distinct keys in it. Each key has a number on it, denoting which room it unlocks,
+# and you can take all of them with you to unlock the other rooms.
+#
+# Given an array rooms where rooms[i] is the set of keys that you can obtain if you visited room i,
+# return true if you can visit all the rooms, or false otherwise.
 
+def canVisitAllRooms(rooms):
+    visited = set()
+    stack = [0]
 
+    while stack:
+        room = stack.pop()
+        visited.add(room)
+        for key in rooms[room]:
+            if key not in visited:
+                stack.append(key)
+
+    return len(visited) == len(rooms)
 
 
 def maxArea(height) -> int:
