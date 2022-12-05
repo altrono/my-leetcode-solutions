@@ -116,6 +116,51 @@ def unique_paths_2(obstacleGrid):
 
 
 
+
+# 73. Set Matrix Zeroes
+# Given an m x n integer matrix matrix, if an element is 0, set its entire row and column to 0's.
+#
+# You must do it in place.
+# Input: matrix = [[1,1,1],[1,0,1],[1,1,1]]
+# Output: [[1,0,1],[0,0,0],[1,0,1]]
+#
+# Input: matrix = [[0,1,2,0],[3,4,5,2],[1,3,1,5]]
+# Output: [[0,0,0,0],[0,4,5,0],[0,3,1,0]]
+def setZeroes(self, matrix):
+    """
+    Do not return anything, modify matrix in-place instead.
+    """
+    r_flag = c_flag = False
+    rows = len(matrix)
+    cols = len(matrix[0])
+
+    for row in range(rows):
+        for col in range(cols):
+            if matrix[row][col] == 0:
+                if row == 0:
+                    r_flag = True
+                if col == 0:
+                    c_flag = True
+                elif row != 0 and col != 0:
+                    matrix[row][0] = 0
+                    matrix[0][col] = 0
+
+    for row in range(1, rows):
+        for col in range(1, cols):
+            if matrix[0][col] == 0 or matrix[row][0] == 0:
+                matrix[row][col] = 0
+
+    if r_flag:
+        matrix[0] = [0] * cols
+
+    if c_flag:
+        for row in range(rows):
+            matrix[row][0] = 0
+
+
+
+
+
 # 79. Word Search
 # Given an m x n grid of characters board and a string word, return true
 # if word exists in the grid.
@@ -132,6 +177,40 @@ def unique_paths_2(obstacleGrid):
 # Return the maximum amount of water a container can store.
 #
 # Notice that you may not slant the container.
+
+
+
+
+# 121. Best Time to Buy and Sell Stock
+# You are given an array prices where prices[i] is the price of a given stock on the ith day.
+#
+# You want to maximize your profit by choosing a single day to buy one stock and choosing a different
+# day in the future to sell that stock.
+#
+# Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0
+# Example 1:
+# Input: prices = [7,1,5,3,6,4]
+# Output: 5
+# Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+# Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
+#
+# Example 2:
+# Input: prices = [7,6,4,3,1]
+# Output: 0
+# Explanation: In this case, no transactions are done and the max profit = 0.
+def maxProfit(self, prices):
+    output = 0
+    buy = prices[0]
+
+    for val in prices:
+        if val < buy:
+            buy = val
+        else:
+            output = max(output, val - buy)
+
+    return output
+
+
 
 
 # 159. Longest Substring with At Most Two Distinct Characters
@@ -166,14 +245,29 @@ def longest_substring_with_at_most_two_distinct_characters(s):
 
 
 
-# # 253 Meeting Rooms II
-# Given an array of meeting time intervals intervals where
+# 221. Maximal Square
+# Given an m x n binary matrix filled with 0's and 1's,
+# find the largest square containing only 1's and return its area.
+# Input: matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
+# Output: 4
+# Input: matrix = [["0","1"],["1","0"]]
+# Output: 1
 
 
-
-
-
-
+# T(n) = O(mxn)
+# S(n) = O(1)
+def maximalSquare(matrix):
+    output = 0
+    for row in range(len(matrix)):
+        for col in range(len(matrix[0])):
+            if row == 0 or col == 0:
+                output = max(output, int(matrix[row][col]))
+            elif matrix[row][col] == '1':
+                matrix[row][col] = min(int(matrix[row - 1][col]), int(matrix[row][col - 1]),
+                                       int(matrix[row - 1][col - 1])) + 1
+                output = max(output, int(matrix[row][col]))
+    output = output ** 2
+    return output
 
 # 238. Product of Array Except Self
 # Given an integer array nums, return an array answer such that answer[i] is equal to
